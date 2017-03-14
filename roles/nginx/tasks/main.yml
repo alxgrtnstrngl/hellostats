@@ -1,0 +1,11 @@
+# sets up basic nginx and overwrites the main config
+---
+- name: install nginx
+  yum: name=nginx state=present
+
+- name: overwrite the main nginx conf
+  copy: src='default_nginx.conf' dest={{ nginx_conf }}/nginx.conf mode=644
+
+- name: copy the hello nginx conf to the sites directory
+  copy: src='hello_nginx.conf' dest={{ nginx_sites }}/hello_nginx.conf mode=644
+  notify: restart nginx

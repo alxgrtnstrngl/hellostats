@@ -1,0 +1,9 @@
+# this installs the basic packages needed by the instance
+---
+- name: install the basic development packages
+  yum: name={{ item }} state=present
+  with_items:
+      - 'epel-release'
+      - '@Development tools'
+      - 'python-pip'
+      - 'python-devel'

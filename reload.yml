@@ -1,0 +1,13 @@
+# run this to restart uwsgi and nginx after code updates
+---
+- name: Setup and deploy the Hello app on each ec2 instance
+  hosts: hello
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - name: start uwsgi
+      service: name=uwsgi state=restarted enabled=yes
+
+    - name: restart nginx
+      service: name=nginx state=restarted enabled=yes

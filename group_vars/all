@@ -1,0 +1,9 @@
+# variables specifying different directory paths
+init_conf: '/etc/init'
+nginx_conf: '/etc/nginx'
+nginx_sites: '/etc/nginx/conf.d'
+hello_dir: '/var/www/hello'
+hello_env: '/var/www/hello/venv'
+uwsgi_etc: '/etc/uwsgi'
+uwsgi_vassal: '/etc/uwsgi/vassals'
+uwsgi_log: '/var/log/uwsgi'

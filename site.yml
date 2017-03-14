@@ -1,0 +1,11 @@
+# main playbook to deploy the hello app to server
+---
+- name: Setup and deploy the Hello app on each ec2 instance
+  hosts: hello
+  become: yes
+  become_method: sudo
+  
+  roles:
+      - common
+      - nginx
+      - hello

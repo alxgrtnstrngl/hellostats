@@ -1,0 +1,46 @@
+# setup the project dir and install depdencies then copy files
+---
+- name: create the hello app directory
+  file: path={{ hello_dir }} state=directory owner=nginx group=nginx
+
+- name: copy over all of project python files
+  copy: src={{ item }} dest={{ hello_dir }}/{{ item }} mode=755
+  with_items:
+      - 'hello.py'
+      - 'hello_db.py'
+      - 'hello_tools.py'
+      - '__init__.py'
+      - 'hosts.list'
+
+- name: check if the db file exists
+  stat: path={{ hello_dir }}/hello.db
+  register: db_exists
+
+- name: copy over the db as a new db
+  copy: src='hello_default.db' dest={{ hello_dir }}/hello.db owner=nginx group=nginx mode=644
+  when: db_exists.stat.exists == False
+
+- name: create the uwsgi etc directory
+  file: path={{ uwsgi_etc }} state=directory owner=nginx group=nginx
+
+- name: create the uwsgi vassal directories
+  file: path={{ uwsgi_vassal }} state=directory owner=nginx group=nginx
+
+- name: copy the uwsgi ini to the vassal directory
+  copy: src='hello_uwsgi.ini' dest={{ uwsgi_vassal }}/hello_uwsgi.ini mode=755
+
+- name: create the uwsgi logging dirs
+  file: path={{ uwsgi_log }} state=directory owner=nginx group=nginx
+
+- name: copy the uwsgi service file
+  copy: src='uwsgi.conf' dest={{ init_conf }}/uwsgi.conf
+
+- name: install flask and uwsgi in the virtualenv
+  pip: name={{ item }} virtualenv={{ hello_env }}
+  with_items:
+      - 'requests'
+      - 'flask'
+      - 'uwsgi'
+  notify:
+      - start uwsgi
+      - restart nginx
