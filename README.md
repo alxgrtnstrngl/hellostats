@@ -1,5 +1,5 @@
 # README #
-author: Alex G.S
+author: Alex G.S.
 
 email: alxgrtnstrngl@gmail.com
 
